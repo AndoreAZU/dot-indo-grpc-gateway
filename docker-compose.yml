@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  dot-indonesia:
+    build: ./
+    container_name: dot-indonesia-1
+    image: dot-indonesia
+    ports:
+      - 8080:8080
+      - 8081:8081
+    environment:
+      - TZ=Asia/Jakarta
+    env_file:
+      - resource/env
+      - resource/env-${profile}

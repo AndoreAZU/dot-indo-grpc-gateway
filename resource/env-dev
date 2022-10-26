@@ -1,0 +1,12 @@
+ENV=dev
+LOGGER.PATH=/var/log/financial-dashboard/financial-dashboard-internal.log
+# another variable for testing pupose, can put it on here
+# but before merge into staging/sandbox/master, please move it into vault
+DBHOST=ec2-54-163-34-107.compute-1.amazonaws.com
+DBPASS=58ee37f62811e607f36f3a8ae0697099e4cdc41aeb29c7c7305794277ffc48bd
+DBPORT=5432
+DBUSER=gcnumuoscxdysa
+DBNAME=dedve2q53cj5e6
+SSLMODE=require
+REDIS_URL=redis-16229.c13.us-east-1-3.ec2.cloud.redislabs.com:16229
+REDIS_PASSWORD=eWVcNwjk21Qu6UbNp6LWqped7p8y5cUQ

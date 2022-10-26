@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package brick.financial.dashboard.internal;
+
+import "google/api/annotations.proto";
+
+option go_package = "/pkg";
+
+service UserManagement {
+    // Login
+    rpc Login (LoginRequest) returns (Response) {
+        option (google.api.http) = {
+            post: "/v1/login"
+            body: "*"
+        };
+    }
+
+    // Register
+    rpc Register (RegisterRequest) returns (Response) {
+        option (google.api.http) = {
+            put: "/v1/register"
+            body: "*"
+        };
+    }
+
+    // Get Profile
+    rpc GetProfile (EmptyMessage) returns (ResponseGetProfile) {
+        option (google.api.http) = {
+            get: "/v1/profile"
+        }; 
+    }
+
+    // Get User
+    rpc GetUser (User) returns (ResponseGetUser) {
+        option (google.api.http) = {
+            get: "/v1/user"
+        }; 
+    }
+
+    // Logout
+    rpc Logout (EmptyMessage) returns (Response) {
+        option (google.api.http) = {
+            delete: "/v1/logout"
+            body: "*"
+        };
+    }
+
+    // Update
+    rpc Update (User) returns (Response) {
+        option (google.api.http) = {
+            patch: "/v1/user"
+            body: "*"
+        };
+    }
+
+    // Follow
+    rpc Follow (FollowRequest) returns (Response) {
+        option (google.api.http) = {
+            patch: "/v1/follow"
+            body: "*"
+        };
+    }
+
+    // Get Following
+    rpc GetFollowing (EmptyMessage) returns (ResponseGetFollowing) {
+        option (google.api.http) = {
+            get: "/v1/following"
+        };
+    }
+}
+
+message LoginRequest {
+    string email = 1 [json_name="email"];
+    string password = 2 [json_name="password"];
+}
+
+message RegisterRequest {
+    string email = 1 [json_name="email"];
+    string password = 2 [json_name="password"];
+    string username = 3 [json_name="username"];
+}
+
+message EmptyMessage {
+    
+}
+
+message User {
+    string xid = 1 [json_name="xid"];
+    string email = 2 [json_name="email"];
+    string username = 3 [json_name="username"];
+    int32 age = 4 [json_name="age"];
+    string address = 5 [json_name="address"];
+    string gender = 6 [json_name="gender"];
+    string tier_id = 7 [json_name="tier_id"];
+    string created_at = 8 [json_name="created_at"];
+    string updated_at = 9 [json_name="updated_at"];
+
+}
+
+message ResponseGetFollowing {
+    int32 status = 1;
+    string message = 2;
+    repeated UserProfile user = 3 [json_name="users"];
+}
+
+message FollowRequest {
+    string email = 1;
+    int32 action = 2 [json_name="action"];
+}
+
+message UserProfile {
+    string xid = 1;
+    string username = 2;
+    string email = 3;
+}
+
+message ResponseGetProfile{
+    int32 status = 1;
+    string message = 2;
+    User profile = 3;
+}
+
+message ResponseGetUser {
+    int32 status = 1;
+    string message = 2;
+    optional UserProfile profile = 3;
+}
+
+message Response {
+    int32 status = 1;
+    string message = 2;
+    string data = 3;
+}

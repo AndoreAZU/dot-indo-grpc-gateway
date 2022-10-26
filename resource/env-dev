@@ -1,5 +1,5 @@
 ENV=dev
-LOGGER.PATH=/var/log/financial-dashboard/financial-dashboard-internal.log
+LOGGER.PATH=/var/log/dot-indo.log
 # another variable for testing pupose, can put it on here
 # but before merge into staging/sandbox/master, please move it into vault
 DBHOST=ec2-54-163-34-107.compute-1.amazonaws.com

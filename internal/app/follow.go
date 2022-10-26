@@ -26,6 +26,7 @@ func (x *UserManagement) Follow(ctx context.Context, req *desc.FollowRequest) (*
 
 	user, _ := x.getUser.GetUser(ctx, xid)
 
+	// 1 follow 2 unfollow
 	err = x.follow.Follow(ctx, user.Xid, req.Email, req.Action)
 	if err != nil {
 		return &desc.Response{

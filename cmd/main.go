@@ -7,7 +7,6 @@ import (
 	"dot-indonesia/internal/service"
 	"dot-indonesia/internal/util"
 	"log"
-	"net"
 	"net/http"
 	"os"
 
@@ -15,14 +14,18 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
 )
 
 func main() {
 	util.InitEnv()
 
-	port_grpc := os.Getenv("GRPC_PORT")
-	port_rest := os.Getenv("REST_PORT")
+	port_rest, port_grpc := "", ""
+	if len(os.Getenv("PORT")) == 0 {
+		port_rest = os.Getenv("REST_PORT")
+	}
+
+	// port_grpc := os.Getenv("GRPC_PORT")
+	// port_rest := os.Getenv("REST_PORT")
 
 	logrus.Info("starting port grpc: ", port_grpc, " port rest: ", port_rest)
 	logrus.Info("env: " + os.Getenv("ENV"))
@@ -47,20 +50,22 @@ func main() {
 		login, redis, register, getUser, update, follow,
 	)
 
-	go func() {
-		listener, err := net.Listen("tcp", port_grpc)
-		if err != nil {
-			logrus.Error("Error Start Server: ", err.Error())
-		}
+	// disable grpc
 
-		grpcServer := grpc.NewServer()
-		desc.RegisterUserManagementServer(grpcServer, app)
+	// go func() {
+	// 	listener, err := net.Listen("tcp", port_grpc)
+	// 	if err != nil {
+	// 		logrus.Error("Error Start Server: ", err.Error())
+	// 	}
 
-		err = grpcServer.Serve(listener)
-		if err != nil {
-			logrus.Error("Error Start Server: ", err.Error())
-		}
-	}()
+	// 	grpcServer := grpc.NewServer()
+	// 	desc.RegisterUserManagementServer(grpcServer, app)
+
+	// 	err = grpcServer.Serve(listener)
+	// 	if err != nil {
+	// 		logrus.Error("Error Start Server: ", err.Error())
+	// 	}
+	// }()
 
 	mux := runtime.NewServeMux()
 

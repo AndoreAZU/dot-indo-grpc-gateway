@@ -19,8 +19,8 @@ import (
 func main() {
 	util.InitEnv()
 
-	port_rest, port_grpc := "", ""
-	if len(os.Getenv("PORT")) == 0 {
+	port_rest, port_grpc := os.Getenv("PORT"), ""
+	if len(port_rest) == 0 {
 		port_rest = os.Getenv("REST_PORT")
 	}
 
@@ -77,5 +77,5 @@ func main() {
 		logrus.Info("service started")
 	}
 
-	log.Fatalln(http.ListenAndServe(port_rest, mux))
+	log.Fatalln(http.ListenAndServe(":"+port_rest, mux))
 }

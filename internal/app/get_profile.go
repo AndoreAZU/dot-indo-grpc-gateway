@@ -2,9 +2,12 @@ package app
 
 import (
 	"context"
+	"dot-indonesia/internal/repository"
 	"dot-indonesia/internal/util"
 	desc "dot-indonesia/pkg"
+	"encoding/json"
 	"fmt"
+	"time"
 
 	"google.golang.org/grpc/metadata"
 )
@@ -22,12 +25,29 @@ func (x *UserManagement) GetProfile(ctx context.Context, req *desc.EmptyMessage)
 		}, nil
 	}
 
-	user, err := x.getUser.GetUser(ctx, xid)
+	// get from redis first
+	var user repository.User
+	if err = x.redis.GetKeyToStruct(ctx, xid, &user); err == nil {
+		return &desc.ResponseGetProfile{
+			Status:  200,
+			Message: "success",
+			Profile: util.UnmarshalUser(user),
+		}, nil
+	}
+
+	user, err = x.getUser.GetUser(ctx, xid)
 	if err != nil {
 		return &desc.ResponseGetProfile{
 			Status:  401,
 			Message: err.Error(),
 		}, nil
+	}
+
+	// store to redis
+	a, _ := json.Marshal(user)
+	err = x.redis.SetKey(ctx, xid, string(a), time.Duration(20*time.Minute))
+	if err != nil {
+		fmt.Println("error: ", err)
 	}
 
 	return &desc.ResponseGetProfile{

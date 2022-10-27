@@ -42,6 +42,9 @@ func (x *UserManagement) Update(ctx context.Context, req *desc.User) (*desc.Resp
 		}, nil
 	}
 
+	// delete redis data
+	x.redis.RemoveKey(ctx, xid)
+
 	return &desc.Response{
 		Status:  200,
 		Message: "success",

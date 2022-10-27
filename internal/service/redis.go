@@ -14,7 +14,7 @@ type Redis interface {
 	SetKey(ctx context.Context, k string, v string, duration time.Duration) error
 	GetKeyString(ctx context.Context, k string) (v string, err error)
 	GetKeyHash(ctx context.Context, k, f string) (interface{}, error)
-	GetKeyHashToStruct(ctx context.Context, k, f string, dst any) (err error)
+	GetKeyToStruct(ctx context.Context, k string, dst any) (err error)
 	RemoveKey(ctx context.Context, k string) (err error)
 }
 
@@ -49,8 +49,8 @@ func (x *instance) GetKeyHash(ctx context.Context, k, f string) (interface{}, er
 	return r[0], err
 }
 
-func (x *instance) GetKeyHashToStruct(ctx context.Context, k, f string, dst any) (err error) {
-	t, err := x.Client.HGet(ctx, k, f).Result()
+func (x *instance) GetKeyToStruct(ctx context.Context, k string, dst any) (err error) {
+	t, err := x.Client.Get(ctx, k).Result()
 	if x.Client == nil {
 		return fmt.Errorf("redis_not_connect")
 	}

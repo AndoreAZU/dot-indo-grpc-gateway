@@ -32,10 +32,9 @@ func (x *UserManagement) Update(ctx context.Context, req *desc.User) (*desc.Resp
 	}
 
 	user := util.MarshalUser(req)
-	user.Xid = xid
 	user.Password = user_db.Password
 
-	err = x.update.Update(ctx, user)
+	err = x.update.Update(ctx, xid, user)
 	if err != nil {
 		return &desc.Response{
 			Status:  401,

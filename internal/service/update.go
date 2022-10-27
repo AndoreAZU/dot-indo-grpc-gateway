@@ -7,7 +7,7 @@ import (
 )
 
 type Update interface {
-	Update(ctx context.Context, user repository.User) error
+	Update(ctx context.Context, xid string, user repository.User) error
 }
 
 type update struct {
@@ -18,8 +18,8 @@ func NewUpdate(dao repository.DAO) Update {
 	return &login{dao: dao}
 }
 
-func (x *login) Update(ctx context.Context, user repository.User) error {
-	err := x.dao.NewUpdateQuery().Update(ctx, user)
+func (x *login) Update(ctx context.Context, xid string, user repository.User) error {
+	err := x.dao.NewUpdateQuery().Update(ctx, xid, user)
 	if err != nil {
 		return err
 	}

@@ -13,6 +13,10 @@ generate: clean build
 run :
 	. resource/.gopath && export ENV=${profile} && cd cmd && go run main.go
 
+deploy: generate
+	go build -v -o dot-indonesia cmd/main.go
+	export ENV=${profile} && ./dot-indonesia
+
 deploy-container:
 	profile=${profile} docker-compose down --rmi all
 	profile=${profile} docker-compose up -d

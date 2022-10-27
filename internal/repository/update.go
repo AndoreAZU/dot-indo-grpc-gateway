@@ -17,7 +17,7 @@ func (d *updateQuery) Update(ctx context.Context, xid string, user User) error {
 	tx := DB.Begin()
 	tx = tx.Table("user").Where("xid = ?", xid).Updates(map[string]interface{}{
 		"email":      user.Email,
-		"username":   user.Email,
+		"username":   user.Username,
 		"age":        user.Age,
 		"address":    user.Address,
 		"gender":     user.Gender,
